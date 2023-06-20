@@ -18,25 +18,38 @@ namespace BankDemoApp.FileIO
             filePath = @"C:\temp\accounts.json";
         }
       
-        public static void SaveAccountsFile(List<AccountHolder> accounts)
+        public static void SaveAccountsFile(List<Account> accounts)
         {
+            try
+            {
+                string json = JsonConvert.SerializeObject(accounts, Newtonsoft.Json.Formatting.Indented);
 
-            string json = JsonConvert.SerializeObject(accounts, Newtonsoft.Json.Formatting.Indented);          
-
-            // If the file doesn't exist, create it. If it exists, overwrite it.
-            File.WriteAllText(filePath, json);
-            Console.WriteLine("JSON file created/updated!");
+                // If the file doesn't exist, create it. If it exists, overwrite it.
+                File.WriteAllText(filePath, json);
+                Console.WriteLine("JSON file created/updated!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception Occured: "+ex.Message);
+            }
+            
         }
 
-        public static List<AccountHolder> LoadDataFromFile()
+        public static List<Account> LoadDataFromFile()
         {
-            var accounts = new List<AccountHolder> ();
-            if (File.Exists(filePath))
+            var accounts = new List<Account>();
+            try
             {
-                // If file exists, load data from file
-                string jsonFromFile = File.ReadAllText(filePath);
-                accounts = JsonConvert.DeserializeObject<List<AccountHolder>>(jsonFromFile);
-                Console.WriteLine("Data loaded from file!");
+                if (File.Exists(filePath))
+                {
+                    // If file exists, load data from file
+                    string jsonFromFile = File.ReadAllText(filePath);
+                    accounts = JsonConvert.DeserializeObject<List<Account>>(jsonFromFile);
+                    Console.WriteLine("Data loaded from file!");
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Exception Occured: " + ex.Message);
             }
 
             return accounts;
