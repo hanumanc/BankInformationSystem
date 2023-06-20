@@ -2,6 +2,7 @@
 using BankDemoApp.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -23,7 +24,7 @@ namespace BankDemoApp
 
                 // Accept user input
                 Console.Write("Enter your choice: ");
-                string userInput = Console.ReadLine();
+                string userInput = Console.ReadLine();               
 
                 // Process user input
                 switch (userInput)
@@ -55,6 +56,8 @@ namespace BankDemoApp
                         break;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
+
+                       
                         break;
                 }
 
@@ -64,7 +67,7 @@ namespace BankDemoApp
     }
     public class BankOperations
     {
-        static List<AccountHolder> lAccounts = new List<AccountHolder>();
+        static List<Account> lAccounts = new List<Account>();
 
         public static void LoadData()
         {
@@ -77,10 +80,26 @@ namespace BankDemoApp
         public static void CreateAccount()
         {
             string name = null;
-            Console.WriteLine("Enter Name : ");
+            int accountType = 0;
+            double bal = 0;
+
+            Console.WriteLine("Enter Account Name : ");
             name = Console.ReadLine();
 
-            var account = new AccountHolder(name);
+            Console.WriteLine("Enter Account AccountType : ");
+            Console.WriteLine("1. SavingsAccount ");
+            Console.WriteLine("2. CurrentAccount ");
+            Console.WriteLine("3. LoanAccount ");
+            Console.WriteLine("4. NRIAccount ");
+
+            accountType = Convert.ToInt16( Console.ReadLine());
+
+
+            Console.WriteLine("Enter Your Opening Deposit : ");
+            bal = Convert.ToDouble(Console.ReadLine());
+
+
+            var account = new Account(name,accountType, bal); // Create the account
             lAccounts.Add(account);
 
         }
@@ -115,6 +134,7 @@ namespace BankDemoApp
             {
                 Console.WriteLine("Account # : " + item.IAccountNumber);
                 Console.WriteLine("Account Name : " + item.SName);
+                Console.WriteLine("Account Type: " + item.accType);
                 Console.WriteLine(" ");
 
             }
@@ -157,7 +177,8 @@ namespace BankDemoApp
                 Console.WriteLine("3. Back to Main Menu");
 
                 Console.Write("Enter your choice: ");
-                string userInput = Console.ReadLine();
+                string userInput = Console.ReadLine();            
+
 
                 switch (userInput)
                 {
@@ -178,8 +199,5 @@ namespace BankDemoApp
             }
         }
     }
-}
-
-      
-    
-
+ } //End of the program          
+//This is From Hanuman's Branch
